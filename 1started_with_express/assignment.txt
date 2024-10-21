@@ -1,0 +1,31 @@
+1) Why are we using Express JS ? Any reasons?
+
+=> express js is a popular tool to build web applications using js.it's like a toolkit that helps us to create websites quickly,easily. other than that it,s flexible,secure,and have large community of dvelopers.
+
+2)Install Express Js
+
+=> npm install express --save
+
+3)What are middlewares ?
+
+=>middlewares are the function that handles req and res  in nodejs.
+
+4)What is next used for.
+
+=>next function is used for pass control to next middleware in the cahin.
+
+5)What is res.send used for?
+
+=>used to send response to the client.
+
+6)If i do res.send('<h1> hello to node js </h1>') . What will be the content-type header equal to.
+
+=> Content-Type header: text/html
+
+7)If I do res.send( { key1: value }) . What will be the content-type header equal to.
+
+=> Content-Type header: application/json
+
+8)What does app.listen(3000) do behind the scenes ?
+
+=> It creates a server at the port no 3000

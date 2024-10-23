@@ -49,7 +49,7 @@
 
 const express = require('express')
 const app = express()
-
+//app.use()-> Executed in order of definition
 app.use((req, res, next) => {
     console.log('middleware');
     next()

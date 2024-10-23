@@ -52,7 +52,10 @@
 // app.use(bodyParser.urlencoded({ extended: false }));
 
 // app.use('/add-product', (req, res, next) => {
-//     res.send('<form action="/product" method="POST"><input type="text" name="title"><button type="submit">Add Product</button></form>')
+//     res.send(`<form action="/product" method="POST">
+//                 <input type="text" name="title">
+//                 <button type="submit">Add Product</button>
+//               </form>`)
 //     //An action attribute set to /product, meaning that when the form is submitted, the data will be sent to the /product URL.A method attribute set to POST, indicating that the data will be sent via an HTTP POST request.
 // })
 

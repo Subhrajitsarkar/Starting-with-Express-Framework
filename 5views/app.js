@@ -1,12 +1,12 @@
-const path = require('path');
-
-const express = require('express');
+const express = require('express');//importing express framework
 const bodyParser = require('body-parser');
 
 const app = express();
 
-const adminRoutes = require('./routes/admin');
-const shopRoutes = require('./routes/shop');
+const path = require('path'); //for serving static css folder
+
+const adminRoutes = require('./routes/admin.js');
+const shopRoutes = require('./routes/shop.js');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));

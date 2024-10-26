@@ -1,6 +1,6 @@
-const path = require('path');
-
 const express = require('express');
+
+const path = require('path');//for serving html file
 
 const rootDir = require('../util/path');
 

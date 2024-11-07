@@ -21,6 +21,7 @@ exports.addUser = (req, res, next) => {
 
     User.create({
         userName: userName,
+        //key:value = colm name in user table:value from req.body.username 
         contact: contact,
         email: email,
     })

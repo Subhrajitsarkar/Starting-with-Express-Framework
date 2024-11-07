@@ -9,7 +9,7 @@ router.get('/add-product', (req, res, next) => {
 //admin/add-product =>POST for submitting form
 router.post('/add-product', (req, res, next) => {
     console.log(req.body);
-    res.redirect('/')
+    res.redirect('/shop')
 })
 
 module.exports = router

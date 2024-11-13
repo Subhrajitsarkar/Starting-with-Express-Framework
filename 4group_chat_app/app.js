@@ -6,6 +6,16 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// Serve login page
+app.get('/login', (req, res) => {
+    res.send(`
+        <form onsubmit="localStorage.setItem('username', document.getElementById('username').value)" action="/" method="GET">
+            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+            <button type="submit">Login</button>
+        </form>
+    `);
+});
+
 // GET route
 app.get("/", (req, res) => {
     // Read the username and message from the file
@@ -37,16 +47,6 @@ app.post('/', (req, res) => {
         }
         res.redirect('/');
     });
-});
-
-// Serve login page
-app.get('/login', (req, res) => {
-    res.send(`
-        <form onsubmit="localStorage.setItem('username', document.getElementById('username').value)" action="/" method="GET">
-            <input type="text" id="username" name="username" placeholder="Enter your username" required>
-            <button type="submit">Login</button>
-        </form>
-    `);
 });
 
 // Start the server

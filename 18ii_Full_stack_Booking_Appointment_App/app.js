@@ -1,19 +1,27 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const app = express();
-const sequelize = require("./utils/database");
+let express = require('express');
+let app = express();
 
-const userRoute = require("./routes/userRoute");
+const path = require('path');
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(bodyParser.urlencoded({ extended: false }));
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
 
-app.use("/get", userRoute);
-app.use("/post", userRoute);
+const cors = require('cors');
+app.use(cors());
 
-sequelize
-    .sync()
-    .then((result) => {
-        app.listen(3000);
+
+let userRoutes = require('./routes/userRoute')
+app.use('/user', userRoutes)
+
+let sequelize = require('./utils/database')
+sequelize.sync()
+    .then(() => {
+        app.listen(3000, () => {
+            console.log('Server is running on http://localhost:3000');
+        });
     })
-    .catch((err) => console.log(err));
+    .catch(err => {
+        console.error('Database sync failed:', err);
+    });

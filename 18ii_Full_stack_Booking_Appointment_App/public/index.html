@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form action="" method="POST" onsubmit="saveDetails(event)" id="formId">
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name">
+        <label for="number">Contact</label>
+        <input type="number" name="number" id="number">
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email">
+
+        <button type="submit">ADD</button>
+    </form>
+    <ul id="ulId"></ul>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        async function saveDetails(event) {
+            try {
+                event.preventDefault();
+                let name = document.getElementById('name').value;
+                let number = document.getElementById('number').value;
+                let email = document.getElementById('email').value;
+
+                let obj = { name, number, email };
+                let response = await axios.post("http://localhost:3000/user/add-user", obj);
+                console.log(response.data);
+                document.getElementById('formId').reset();
+                displayDetails();
+            } catch (error) {
+                console.error('Error adding user:', error);
+                alert('Failed to add user. Please try again.');
+            }
+        }
+
+        async function displayDetails() {
+            let response = await axios.get('http://localhost:3000/user/get-users')
+            let userDetails = response.data.allUsers;
+            let show = document.getElementById('ulId')
+            show.innerHTML = ''
+            userDetails.forEach((user) => {
+                show.innerHTML += `<li>${user.name}-${user.phonenumber}-${user.email}
+            <button onclick='deleteDetails("${user.id}")' type='submit'>Delete</button></li>`
+            })
+        }
+
+        async function deleteDetails(id) {
+            let response = await axios.delete(`http://localhost:3000/user/delete-user/${id}`)
+            let userDetails = response.data
+            displayDetails()
+        }
+        window.onload = displayDetails
+    </script>
+
+
+
+</body>
+
+</html>

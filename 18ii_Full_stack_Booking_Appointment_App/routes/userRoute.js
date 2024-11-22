@@ -1,15 +1,11 @@
-const express = require("express");
-const router = express.Router();
-const userController = require("../controllers/userController");
+let express = require('express')
+let router = express.Router()
+let userController = require('../controllers/userController')
 
-router.use(express.static("public"));
+router.post('/add-user', userController.addUser)
 
-router.get("/", userController.getBookingPage);
+router.get('/get-users', userController.getUser)
 
-router.get("/users", userController.getUsers);
-
-router.get("/deleteUser/:id", userController.deleteUser);
-
-router.post("/addUser", userController.addUser);
+router.delete('/delete-user/:id', userController.deleteUser)
 
 module.exports = router;

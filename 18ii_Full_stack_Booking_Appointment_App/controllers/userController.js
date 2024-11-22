@@ -1,51 +1,52 @@
-const path = require("path");
-const Sequelize = require("sequelize");
-const User = require("../models/userModel");
+let User = require('../models/userModel')
 
-exports.getBookingPage = (req, res, next) => {
-    res.sendFile(path.join(__dirname, "../", "public", "views", "index.html"));
-};
+let addUser = async (req, res, next) => {
+    try {
+        if (!req.body.number) {
+            throw new Error('Phone number is mandatory');
+        }
+        let name = req.body.name;
+        let email = req.body.email;
+        let phonenumber = req.body.number;
 
-exports.getUsers = (req, res, next) => {
-    User.findAll()
-        .then((users) => {
-            res.json(users);
-        })
-        .catch((err) => console.log(err));
-};
+        let data = await User.create({ name: name, email: email, phonenumber: phonenumber })
+        // this data is sending in backend
+        res.status(201).json({ newUserDetail: data })
+    }
+    catch (err) {
+        res.status(500).json({ error: err })
+    }
+}
 
-exports.addUser = (req, res, next) => {
-    const userName = req.body.userName;
-    const contact = req.body.contact;
-    const email = req.body.email;
+let getUser = async (req, res, next) => {
+    try {
+        let users = await User.findAll();
+        res.status(200).json({ allUsers: users })
+    }
+    catch (err) {
+        console.log('Get user is failing', JSON.stringify(err))
+        res.status(500).json({ error: err })
+    }
+}
 
-    User.create({
-        userName: userName,
-        //key:value = colm name in user table:value from req.body.username 
-        contact: contact,
-        email: email,
-    })
-        .then((result) => {
-            console.log("Added to User");
-            res.redirect("/get");
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-};
+let deleteUser = async (req, res) => {
+    try {
+        if (!req.params.id) {
+            console.log('ID is missing')
+            return res.status(400).json({ err: 'ID is missing' })
+        }
+        let uId = req.params.id;
+        await User.destroy({ where: { id: uId } })
+        res.sendStatus(200);
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).json(err)
+    }
+}
 
-exports.deleteUser = (req, res, next) => {
-    const id = req.params.id;
-    console.log(id);
-    User.findByPk(id)
-        .then((user) => {
-            return user.destroy();
-        })
-        .then((result) => {
-            console.log("User Deleted");
-            res.redirect("/get");
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-};
+module.exports = {
+    addUser,
+    getUser,
+    deleteUser
+}

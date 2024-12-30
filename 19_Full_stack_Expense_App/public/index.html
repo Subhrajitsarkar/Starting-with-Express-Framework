@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form onsubmit="saveOrder(event)" id="formId">
+        <label for="price">Choose price:</label>
+        <input type="number" name="number" id="number" required>
+
+        <label for="name">Choose Dish:</label>
+        <input type="text" name="name" id="name" required>
+
+        <label for="table">Choose table:</label>
+        <select name="table" id="table">
+            <option value="tab1">Table 1</option>
+            <option value="tab2">Table 2</option>
+            <option value="tab3">Table 3</option>
+        </select>
+        <button type="submit">ADD</button>
+    </form>
+    <div class="container">
+        <h1>Orders</h1>
+        <h2>Table 1</h2>
+        <ul id="t1"></ul>
+        <h2>Table 2</h2>
+        <ul id="t2"></ul>
+        <h2>Table 3</h2>
+        <ul id="t3"></ul>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        async function saveOrder(event) {
+            event.preventDefault()
+            let price = document.getElementById('number').value;
+            let name = document.getElementById('name').value;
+            let table = document.getElementById('table').value;
+
+            let obj = { price, name, table }
+
+            await axios.post('http://localhost:3000/order/add-order', obj)
+            document.getElementById('formId').reset()
+            displayOrder()
+        }
+
+        async function displayOrder() {
+            let response = await axios.get('http://localhost:3000/order/get-orders')
+            let orderDetails = response.data.allOrders
+            document.getElementById('t1').innerHTML = ''
+            document.getElementById('t2').innerHTML = ''
+            document.getElementById('t3').innerHTML = ''
+            orderDetails.forEach((order) => {
+                let li = document.createElement('li')
+
+                li.innerHTML = `${order.price} - ${order.name} - ${order.table}
+                <button onclick='deleteOrder("${order.id}")'>Delete order</button>
+                <button onclick='editOrder("${order.id}")'>Edit order</button>`
+
+                if (order.table === 'tab1')
+                    document.getElementById('t1').appendChild(li)
+                else if (order.table === 'tab2')
+                    document.getElementById('t2').appendChild(li)
+                else if (order.table === 'tab3')
+                    document.getElementById('t3').appendChild(li)
+            })
+        }
+
+        async function deleteOrder(id) {
+            await axios.delete(`http://localhost:3000/order/delete-order/${id}`)
+            displayOrder()
+        }
+
+        async function editOrder(id) {
+            let editedPrice = prompt('Enter the price')
+            let editedName = prompt('Enter the name')
+            if (editedName && editedPrice) {
+                axios.put(`http://localhost:3000/order/edit-order/${id}`, { price: editedPrice, name: editedName })
+                displayOrder()
+            }
+        }
+        window.onload = displayOrder
+    </script>
+</body>
+
+</html>

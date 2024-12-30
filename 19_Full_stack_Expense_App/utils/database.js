@@ -1,7 +1,7 @@
-const Sequelize = require("sequelize");
-const sequelize = new Sequelize("expense_tracker", "root", "password", {
-    dialect: "mysql",
-    host: "localhost",
+let Sequelize = require('sequelize');
+let sequelize = new Sequelize('order', 'root', 'password', {
+    dialect: 'mysql',
+    host: 'localhost',
 });
 
 module.exports = sequelize;

@@ -60,6 +60,7 @@ app.put('/order/edit-order/:id', async (req, res, next) => {
         if (!id || !price || !name)
             return res.status(400).json({ error: 'All fields are required' })
         await Order.update({ price, name }, { where: { id } })
+        await User.findByPk(id);
         res.sendStatus(200)
     }
     catch (err) {
